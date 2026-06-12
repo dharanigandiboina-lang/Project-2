@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virtual Sticky Note Board</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #74ebd5, #9face6);
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+}
+
+.input-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 320px;
+    height: 80px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+}
+
+button {
+    padding: 5p 20px;
+    margin-top: 10px;
+    border: none;
+    background: #ff6b6b;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #ff4757;
+}
+
+#board {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.note {
+    width: 220px;
+    min-height: 150px;
+    padding: 15px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    font-size: 18px;
+    animation: fadeIn 0.3s ease;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 22px;
+    color: red;
+    font-weight: bold;
+}
+
+@keyframes fadeIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>📝 Virtual Sticky Note Board</h1>
+
+<div class="input-container">
+    <textarea id="noteInput" placeholder="Write your note here..."></textarea>
+    <br>
+    <button id="addBtn">Add Note</button>
+</div>
+
+<div id="board"></div>
+
+<script>
+const addBtn = document.getElementById("addBtn");
+const board = document.getElementById("board");
+
+const colors = [
+    "#FFD93D",
+    "#6BCB77",
+    "#4D96FF",
+    "#FF8E9E",
+    "#B983FF",
+    "#FFA94D"
+];
+
+addBtn.addEventListener("click", () => {
+    const text = document.getElementById("noteInput").value;
+
+    if (text.trim() === "") {
+        alert("Please enter a note!");
+        return;
+    }
+
+    const note = document.createElement("div");
+    note.classList.add("note");
+
+    const randomColor =
+        colors[Math.floor(Math.random() * colors.length)];
+
+    note.style.backgroundColor = randomColor;
+
+    note.innerHTML = `
+        <span class="delete-btn">&times;</span>
+        <p>${text}</p>
+    `;
+
+    note.querySelector(".delete-btn").addEventListener("click", () => {
+        note.remove();
+    });
+
+    board.appendChild(note);
+
+    document.getElementById("noteInput").value = "";
+});
+</script>
+
+</body>
+</html>
